@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 const User = require("./User");
+const Post = require("./Post");
+
 const commentSchema = new Schema({
   text: {
     type: String,
@@ -14,6 +16,11 @@ const commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: [true, "Author is required"],
+  },
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
+    required: [true, "post is required"],
   },
 });
 
