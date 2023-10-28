@@ -10,26 +10,31 @@ const postValidation = [
     .escape(),
   body("text").exists().escape(),
 ];
-const postValidationErrHandler = (req, res) => {
+const postValidationErrHandler = (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     // sent errors
     res.status(400).send(errors);
   }
+  next();
 };
 postController.create = [
   ...postValidation,
   postValidationErrHandler,
   asyncHandler(async (req, res) => {
-    // Create a post object
-    const post = Post.create({
-      title: req.body.title,
-      text: req.body.text,
-      author: req.user._id,
-      state: req.body.state,
-    });
-    await post.save();
-    res.status(201).send(post);
+    if (req.user == ("admin" || "editor" || "author")) {
+      // Create a post object
+      const post = Post.create({
+        title: req.body.title,
+        text: req.body.text,
+        author: req.user._id,
+        state: req.body.state,
+      });
+      await post.save();
+      res.status(201).send(post);
+    } else {
+      res.status(401).send("Unauthorized");
+    }
   }),
 ];
 postController.getAll = asyncHandler(async (req, res) => {

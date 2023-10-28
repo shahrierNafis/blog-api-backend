@@ -14,6 +14,8 @@ router.post("/users", userController.create);
 
 router.get("/users", userController.getALL);
 
+router.get("/users/me", userController.me);
+
 router.get("/users/:username", userController.getOne);
 
 router.put("/users/:username", userController.update);
@@ -23,7 +25,7 @@ router.delete("/users/:username", userController.delete);
 // Authentication
 router.post("/login", authentication.login);
 
-router.post("/refreshToken", authentication.refreshToken);
+router.post("/refresh-token", authentication.refreshToken);
 
 router.delete("/logout", authentication.logout);
 

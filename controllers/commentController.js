@@ -3,13 +3,14 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const commentController = {};
 
-const commentValidation = [body("text").exists().escape()];
-const commentValidationErrHandler = (req, res) => {
+const commentValidation = [body("text", "text is required").exists().escape()];
+const commentValidationErrHandler = (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     // sent errors
     res.status(400).send(errors);
   }
+  next();
 };
 commentController.create = [
   ...commentValidation,
@@ -21,8 +22,12 @@ commentController.create = [
       author: req.user._id,
       post: req.body.post,
     });
-    await comment.save();
-    res.status(201).send(comment);
+    if (req.user.role !== "visitor") {
+      await comment.save();
+      res.status(201).send(comment);
+    } else {
+      res.status(401).send("non subscribers cant comment");
+    }
   }),
 ];
 commentController.getAll = asyncHandler(async (req, res) => {
