@@ -65,7 +65,10 @@ userController.update = [
     const filter = { username: req.params.username };
     const user = await User.findOne(filter);
     // check if the user is an admin or editor
-    if (user._id === req.user._id || req.user.role == ("admin" || "editor")) {
+    if (
+      user._id === req.user._id ||
+      ["admin", "editor"].includes(req.user.role)
+    ) {
       user.username = req.body.username;
       user.passwordHash = await bcrypt.hash(req.body.password, 10);
       user.role = req.body.role;

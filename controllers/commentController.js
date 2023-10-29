@@ -48,7 +48,7 @@ commentController.update = [
     // check if user is the author or an admin or editor
     if (
       comment.author === req.user._id ||
-      req.user.role == ("admin" || "editor")
+      ["admin", "editor"].includes(req.user.role)
     ) {
       comment.text = req.body.text;
       await comment.save();

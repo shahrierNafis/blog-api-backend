@@ -4,7 +4,6 @@ const postSchema = new Schema({
   title: {
     type: String,
     required: [true, "Title is required"],
-    unique: true,
     trim: true,
   },
   text: {
@@ -23,8 +22,8 @@ const postSchema = new Schema({
   },
   state: {
     type: String,
-    enum: ["published", "unpublished"],
-    default: "unpublished",
+    enum: ["published", "draft"],
+    default: "draft",
   },
 });
 
