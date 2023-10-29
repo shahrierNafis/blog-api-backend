@@ -21,10 +21,10 @@ const mongoose = require("mongoose");
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("Connected to MongoDB"))
-  .catch((error) => handleError(error));
+  .catch((error) => console.log(error));
 
 mongoose.connection.on("error", (err) => {
-  logError(err);
+  console.log(err);
 });
 
 app.use("/v1", v1Router);
