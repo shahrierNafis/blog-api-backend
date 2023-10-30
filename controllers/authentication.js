@@ -75,14 +75,12 @@ authentication.refreshToken = async (req, res, next) => {
     }
     // Get user from the refresh token
     const user = jwtDecode(OldRefreshToken.token);
-    console.log("====================================");
-    console.log(user);
-    console.log("====================================");
     //generate new accessToken and refreshTokens
     const accessToken = generateAccessToken({ _id: user._id });
     const refreshToken = await generateRefreshToken({ _id: user._id });
     res.json({ accessToken: accessToken, refreshToken: refreshToken }).send();
   } catch (error) {
+    console.log(error);
     console.error(error);
     res.status(400).send("Refresh Token Invalid");
   }

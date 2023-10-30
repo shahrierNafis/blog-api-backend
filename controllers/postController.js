@@ -123,8 +123,8 @@ postController.update = [
     }
   }),
 ];
-postController.delete = asyncHandler(async (rec, res, next) => {
-  const filter = { _id: rec.params.id };
+postController.delete = asyncHandler(async (req, res, next) => {
+  const filter = { _id: req.params.id };
   const post = await Post.findOne(filter);
   // check if the user is an admin
   if (post.author === req.user._id || req.user.role == "admin") {

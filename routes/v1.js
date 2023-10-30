@@ -16,11 +16,11 @@ router.get("/users", userController.getALL);
 
 router.get("/users/me", userController.me);
 
-router.get("/users/:username", userController.getOne);
+router.get("/users/:id", userController.getOne);
 
-router.put("/users/:username", userController.update);
+router.put("/users/:id", userController.update);
 
-router.delete("/users/:username", userController.delete);
+router.delete("/users/:id", userController.delete);
 
 // Authentication
 router.post("/login", authentication.login);
@@ -45,9 +45,9 @@ router.post("/posts/:postID/comments", commentController.create);
 
 router.get("/posts/:postID/comments", commentController.getAll);
 
-router.get("/posts/:postID/comments/:commentsID", commentController.getOne);
+router.get("/comments/:commentsID", commentController.getOne);
 
-router.put("/posts/:postID/comments/:commentsID", commentController.update);
+router.put("/comments/:commentsID", commentController.update);
 
-router.delete("/posts/:postID/comments/:commentsID", commentController.delete);
+router.delete("/comments/:commentsID", commentController.delete);
 module.exports = router;

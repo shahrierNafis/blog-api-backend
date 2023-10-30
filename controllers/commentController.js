@@ -3,7 +3,10 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const commentController = {};
 
-const commentValidation = [body("text", "text is required").exists().escape()];
+const commentValidation = [
+  body("text", "text is required").exists().escape(),
+  body("post", "post is required").exists().escape(),
+];
 const commentValidationErrHandler = (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -17,7 +20,7 @@ commentController.create = [
   commentValidationErrHandler,
   asyncHandler(async (req, res) => {
     // Create a Comment object
-    const comment = Comment.create({
+    const comment = new Comment({
       text: req.body.text,
       author: req.user._id,
       post: req.body.post,
@@ -41,8 +44,8 @@ commentController.getOne = asyncHandler(async (req, res) => {
 commentController.update = [
   ...commentValidation,
   commentValidationErrHandler,
-  asyncHandler(async (rec, res, next) => {
-    const filter = { _id: rec.params.commentID };
+  asyncHandler(async (req, res, next) => {
+    const filter = { _id: req.params.commentID };
     const comment = await Comment.findOne(filter);
 
     // check if user is the author or an admin or editor
@@ -59,8 +62,8 @@ commentController.update = [
     }
   }),
 ];
-commentController.delete = asyncHandler(async (rec, res, next) => {
-  const filter = { _id: rec.params.commentID };
+commentController.delete = asyncHandler(async (req, res, next) => {
+  const filter = { _id: req.params.commentsID };
   const comment = await Comment.findOne(filter);
   // check if the user is an admin
   if (comment.author === req.user._id || req.user.role == "admin") {

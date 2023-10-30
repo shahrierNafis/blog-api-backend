@@ -55,14 +55,14 @@ userController.me = asyncHandler(async (req, res) => {
 
 // Get one users
 userController.getOne = asyncHandler(async (req, res) => {
-  return await User.findOne({ username: req.params.username });
+  return res.json(await User.findOne({ _id: req.params.id }));
 });
 
 userController.update = [
   ...userValidation,
   userValidationErrHandler,
   asyncHandler(async (req, res, next) => {
-    const filter = { username: req.params.username };
+    const filter = { id: req.params.id };
     const user = await User.findOne(filter);
     // check if the user is an admin or editor
     if (
@@ -81,7 +81,7 @@ userController.update = [
   }),
 ];
 userController.delete = asyncHandler(async (req, res, next) => {
-  const filter = { username: req.params.username };
+  const filter = { id: req.params.id };
   const user = await User.findOne(filter);
   // check if the user is an admin
   if (user._id === req.user._id || req.user.role == "admin") {
